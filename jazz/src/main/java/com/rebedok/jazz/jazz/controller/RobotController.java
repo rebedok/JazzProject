@@ -23,6 +23,13 @@ public class RobotController {
     @Autowired
     RobotsMonitor robotsMonitor;
 
+    /**
+     * return the robot to the client
+     *
+     * @param id
+     * @return RobotDTO
+     * @see RobotsMonitor#searchRobot(long)
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RobotDTO> getById(@PathVariable Long id) {
         LOGGER.info("REST request. Path:/api/robot/{id}  method: GET");
@@ -35,18 +42,39 @@ public class RobotController {
         return new ResponseEntity<>(robotDTO, HttpStatus.OK);
     }
 
+    /**
+     * return all robot to the client
+     *
+     * @return List RobotDTO
+     * @see RobotsMonitor#findAll()
+     */
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ArrayList<RobotDTO>> getAllRobots() {
         LOGGER.info("REST request. Path:/api/robot  method: GET");
         return new ResponseEntity<>(robotsMonitor.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * create new robot
+     *
+     * @param dto
+     * @return RobotDTO
+     * @see RobotsMonitor#createRobot(RobotDTO)
+     */
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RobotDTO> createRobot(@RequestBody RobotDTO dto) {
         LOGGER.info("REST request. Path:/api/robot/create  method: POST");
         return new ResponseEntity<>(robotsMonitor.createRobot(dto), HttpStatus.OK);
     }
 
+    /**
+     * new task for selected robot
+     *
+     * @param id
+     * @param dto
+     * @return RobotDTO if selected robot is free or HttpStatus.NOT_FOUND
+     * @see RobotsMonitor#taskForRobot(RobotDTO)
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RobotDTO> addTaskForRobot(@PathVariable Long id ,@RequestBody RobotDTO dto) {
         LOGGER.info("REST request. Path:/api/robot/{id}  method: POST");
@@ -58,12 +86,25 @@ public class RobotController {
         return new ResponseEntity<>(robotDTO, HttpStatus.OK);
     }
 
+    /**
+     * new task for first free robot
+     *
+     * @param dto
+     * @return RobotDTO
+     * @see RobotsMonitor#newTask(RobotDTO)
+     */
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RobotDTO> addTask(@RequestBody RobotDTO dto) {
         LOGGER.info("REST request. Path:/api/robot  method: POST");
         return new ResponseEntity<>(robotsMonitor.newTask(dto), HttpStatus.OK);
     }
 
+    /**
+     * destroy selected robot
+     *
+     * @param id
+     * @see RobotsMonitor#robotDestroy(long)
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void destroyRobot(@PathVariable Long id) {
         LOGGER.info("REST request. Path:/api/robot  method: DELETE");

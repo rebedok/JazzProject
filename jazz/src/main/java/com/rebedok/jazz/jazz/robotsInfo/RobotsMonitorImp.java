@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+/**
+ * class implements interface RobotsMonitor
+ */
 @Service
 public class RobotsMonitorImp implements RobotsMonitor {
     private int maxId = 0;
@@ -17,6 +20,12 @@ public class RobotsMonitorImp implements RobotsMonitor {
     private RobotConverter converter = new RobotConverter();
     private static final Logger LOGGER = LoggerFactory.getLogger(RobotsMonitorImp.class);
 
+    /**
+     * search the robot by id
+     *
+     * @param id
+     * @return robot or null if id not found
+     */
     @Override
     public Robot searchRobot(long id) {
         for (Robot r : robots) {
@@ -27,6 +36,12 @@ public class RobotsMonitorImp implements RobotsMonitor {
         return null;
     }
 
+    /**
+     * create new robot
+     *
+     * @param dto
+     * @return Data Transfer Object
+     */
     @Override
     public RobotDTO createRobot(RobotDTO dto) {
         maxId += 1;
@@ -37,6 +52,11 @@ public class RobotsMonitorImp implements RobotsMonitor {
         return dto;
     }
 
+    /**
+     * return all robots
+     *
+     * @return List RobotDTO
+     */
     @Override
     public ArrayList<RobotDTO> findAll() {
         ArrayList<RobotDTO> dtoList = new ArrayList<>();
@@ -47,6 +67,12 @@ public class RobotsMonitorImp implements RobotsMonitor {
         return dtoList;
     }
 
+    /**
+     * add new task by robot id
+     *
+     * @param dto
+     * @return RobotDTO
+     */
     @Override
     public RobotDTO taskForRobot(RobotDTO dto) {
         Robot robot = searchRobot(dto.getId());
@@ -61,6 +87,11 @@ public class RobotsMonitorImp implements RobotsMonitor {
         return dto;
     }
 
+    /**
+     * search free robot
+     *
+     * @return free robot or null if there aren't free robots
+     */
     public Robot searchFreeRobot() {
         for (Robot r : robots) {
             if (r.isFree()) {
@@ -70,6 +101,11 @@ public class RobotsMonitorImp implements RobotsMonitor {
         return null;
     }
 
+    /**
+     * add new task for a first free robot
+     * @param dto
+     * @return RobotDTO
+     */
     public RobotDTO newTask(RobotDTO dto) {
         Robot robot = searchFreeRobot();
         if(robot == null) {
@@ -84,6 +120,10 @@ public class RobotsMonitorImp implements RobotsMonitor {
         return dto;
     }
 
+    /**
+     * Destroy the robot by id
+     * @param id
+     */
     @Override
     public void robotDestroy(long id) {
         LOGGER.info("Robot " + maxId + " is destroyed");
