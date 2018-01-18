@@ -126,9 +126,9 @@ public class RobotsMonitorImp implements RobotsMonitor {
      */
     @Override
     public void robotDestroy(long id) {
-        LOGGER.info("Robot " + maxId + " is destroyed");
         Robot robot = searchRobot(id);
         if(robot !=null) {
+            LOGGER.info("Robot " + id + " is destroyed");
             robots.remove(searchRobot(id));
         }
     }
